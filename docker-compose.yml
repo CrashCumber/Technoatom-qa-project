@@ -1,0 +1,43 @@
+version: '2.1'
+
+services:
+
+    db:
+        image: mysql:latest
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql-dump:/docker-entrypoint-initdb.d
+        environment:
+            MYSQL_ROOT_PASSWORD: qa_test
+            MYSQL_USER: test_qa
+            MYSQL_PASSWORD: qa_test
+            MYSQL_DATABASE: technoatom
+
+
+    vk_api_mock:
+        image: project_qa_vk_api_mock:latest
+        ports:
+            - "5000:5000"
+        depends_on:
+            - db
+        links:
+            - db
+
+    myapp:
+        image: myapp:latest
+        ports:
+            - "8080:8080"
+        depends_on:
+            - db
+        volumes:
+            - /Users/mac/Desktop/project_qa/conf_dir:/conf_dir
+        entrypoint: "/app/myapp --config=/conf_dir/conf.py"
+        links:
+            - db
+            - vk_api_mock
+
+        restart: always
+
