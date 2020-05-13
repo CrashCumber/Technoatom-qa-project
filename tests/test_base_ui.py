@@ -30,6 +30,7 @@ class TestUI(BaseCase):
         fact = self.base_page.find(self.main_page.locators.FACT_PYTHON_DIV, timeout=10).text
         assert fact
 
+    @pytest.mark.UI
     @pytest.mark.skip(reason='TEMP')
     def test_python_history(self, auto):
         self.base_page = auto
@@ -43,6 +44,7 @@ class TestUI(BaseCase):
         assert 'history' in self.driver.page_source
         assert 'python' in self.driver.page_source
 
+    @pytest.mark.UI
     @pytest.mark.skip(reason='TEMP')
     def test_flask(self, auto):
         self.base_page = auto
@@ -58,6 +60,7 @@ class TestUI(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
+    @pytest.mark.UI
     @pytest.mark.skip(reason='TEMP')
     def test_linux_centos(self, auto):
         self.base_page = auto
@@ -73,6 +76,7 @@ class TestUI(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
+    @pytest.mark.UI
     @pytest.mark.skip(reason='TEMP')
     def test_wireshark_news(self, auto):
         self.base_page = auto
@@ -90,6 +94,7 @@ class TestUI(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
+    @pytest.mark.UI
     @pytest.mark.skip(reason='TEMP')
     def test_wireshark_download(self, auto):
         self.base_page = auto
@@ -107,6 +112,7 @@ class TestUI(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
+    @pytest.mark.UI
     @pytest.mark.skip(reason='TEMP')
     def test_tcp_example(self, auto):
         self.base_page = auto

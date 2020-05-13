@@ -31,10 +31,10 @@ def auto(driver):
 
 
 @pytest.fixture(scope='function')
-def driver(config):
-    browser = config['browser']
-    version = config['version']
-    url = config['url']
+def driver(config_ui):
+    browser = config_ui['browser']
+    version = config_ui['version']
+    url = config_ui['url']
     selenoid = False
     if not selenoid:
         manager = ChromeDriverManager(version=version)

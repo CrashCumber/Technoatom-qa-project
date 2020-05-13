@@ -1,20 +1,18 @@
 from os import abort
 import json
 import threading
-
-from mysql import connector
+import mysql.connector
 import sys
 from flask import Flask, request, Request, Response, make_response
 
 app = Flask(__name__)
 
-import mysql.connector
+
 
 def shutdown_mock():
     terminate_func = request.environ.get('werkzeug.server.shutdown')
     if terminate_func:
         terminate_func()
-
 
 @app.route('/')
 def index():
@@ -56,8 +54,42 @@ def get_id(username: str):
         res.headers['Status'] = '400 Not Found'
         res.headers['Content-Type'] = 'application/json'
         res.headers['Response'] = result
-        # abort(404)
         return res
+
+
+@app.route('/get_user/<username>')
+def get_user(username: str):
+    config = {
+        'user': 'test_qa',
+        'password': 'qa_test',
+        'host': 'db',
+        'port': '3306',
+        'database': 'technoatom'
+    }
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor()
+    cursor.execute(f'SELECT * FROM test_users WHERE username="{username}";')
+    user = cursor.fetchone()
+    if not user:
+        cursor.close()
+        connection.close()
+        res = make_response(json.dumps('0'), 404)
+        res.headers['Content-Type'] = 'application/json'
+        return res
+    cursor.close()
+    connection.close()
+    data = {
+            "id": user[0],
+            "username": user[1],
+            "password": user[2],
+            "email": user[3],
+            "access": user[4],
+            "active": user[5],
+            "start_active_time": user[6]
+            }
+    res = make_response(json.dumps(data), 201)
+    res.headers['Content-Type'] = 'application/json'
+    return res
 
 
 if __name__ == '__main__':
