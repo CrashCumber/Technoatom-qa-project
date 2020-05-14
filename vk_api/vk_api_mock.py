@@ -1,39 +1,28 @@
-from os import abort
+
 import json
-import threading
 import mysql.connector
-import sys
-from flask import Flask, request, Request, Response, make_response
+from flask import Flask, request, make_response
+import datetime
 
 app = Flask(__name__)
 
+CONFIG = {
+        'user': 'test_qa',
+        'password': 'qa_test',
+        'host': 'db',
+        'port': '3306',
+        'database': 'technoatom'
+}
 
-
-def shutdown_mock():
-    terminate_func = request.environ.get('werkzeug.server.shutdown')
-    if terminate_func:
-        terminate_func()
 
 @app.route('/')
 def index():
     return 'Hello World! Docker-Compose for Flask & Mysql\n'
 
 
-@app.route('/shutdown')
-def shutdown():
-    shutdown_mock()
-
-
 @app.route('/vk_id/<username>')
 def get_id(username: str):
-    config = {
-        'user': 'test_qa',
-        'password': 'qa_test',
-        'host': 'db',
-        'port': '3306',
-        'database': 'technoatom'
-    }
-    connection = mysql.connector.connect(**config)
+    connection = mysql.connector.connect(**CONFIG)
     cursor = connection.cursor()
     cursor.execute(f'SELECT id FROM test_users WHERE username="{username}";')
     user_id = cursor.fetchone()
@@ -59,14 +48,7 @@ def get_id(username: str):
 
 @app.route('/get_user/<username>')
 def get_user(username: str):
-    config = {
-        'user': 'test_qa',
-        'password': 'qa_test',
-        'host': 'db',
-        'port': '3306',
-        'database': 'technoatom'
-    }
-    connection = mysql.connector.connect(**config)
+    connection = mysql.connector.connect(**CONFIG)
     cursor = connection.cursor()
     cursor.execute(f'SELECT * FROM test_users WHERE username="{username}";')
     user = cursor.fetchone()
@@ -78,6 +60,9 @@ def get_user(username: str):
         return res
     cursor.close()
     connection.close()
+    time = user[6]
+    if time:
+        time = user[6].strftime('%d-%m-%Y %H:%M:%S')
     data = {
             "id": user[0],
             "username": user[1],
@@ -85,17 +70,52 @@ def get_user(username: str):
             "email": user[3],
             "access": user[4],
             "active": user[5],
-            "start_active_time": user[6]
+            "start_active_time": time
             }
     res = make_response(json.dumps(data), 201)
     res.headers['Content-Type'] = 'application/json'
     return res
 
 
+@app.route('/insert_user', methods=['POST', 'GET'])
+def insert_user():
+    data = request.get_json()
+    connection = mysql.connector.connect(**CONFIG)
+    cursor = connection.cursor()
+    insert = f"""
+                   INSERT INTO `test_users` (
+                    `username`,
+                    `password`,
+                    `email`,
+                    `access`
+                    )
+                    VALUES (
+                    '{data["username"]}',
+                    '{data["password"]}',
+                    '{data["email"]}',
+                    '{data["access"]}'
+                    );
+               """
+    cursor.execute(insert)
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return 'Successful'
+
+
+@app.route('/delete_user/<username>')
+def delete_user(username: str):
+    connection = mysql.connector.connect(**CONFIG)
+    cursor = connection.cursor()
+    cursor.execute(f" DELETE FROM `test_users` WHERE username='{username}';")
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return 'Successful'
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-
 
 
 
@@ -120,10 +140,6 @@ if __name__ == '__main__':
 #     server = threading.Thread(target=app.run, kwargs={'host': host, 'port': port, 'debug': True})
 #     server.start()
 #     return server
-
-
-
-
 # @app.route('/post')
 # def post_user():
 #     try:
@@ -143,5 +159,13 @@ if __name__ == '__main__':
 #     else:
 #         abort(404)
 #         return {}
+#
+# def shutdown_mock():
+#     terminate_func = request.environ.get('werkzeug.server.shutdown')
+#     if terminate_func:
+#         terminate_func()
+# @app.route('/shutdown')
+# def shutdown():
+#     shutdown_mock()
 
 

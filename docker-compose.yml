@@ -39,6 +39,5 @@ services:
         links:
             - db
             - vk_api_mock
-
         restart: always
 

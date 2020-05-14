@@ -26,15 +26,3 @@ VALUES (
     1
 );
 
-INSERT INTO `test_users` (
-    `username`,
-    `password`,
-    `email`,
-    `access`
-)
-VALUES (
-    'aleksandr',
-    'aleksandr_pas',
-    'aleksandr@mail.ru',
-    1
-);
