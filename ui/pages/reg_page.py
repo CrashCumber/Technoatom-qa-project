@@ -6,7 +6,7 @@ from ui.locators.locators import RegPageLocators
 class RegPage(BasePage):
     locators = RegPageLocators()
 
-    def create_account(self, user, password, email):
+    def create_account(self, user, password, email, password_repeated=None):
 
         user_field = self.find(self.locators.INPUT_NEW_NAME)
         user_field.clear()
@@ -20,13 +20,16 @@ class RegPage(BasePage):
         password_repeat_field = self.find(self.locators.INPUT_REPEAT_PASSWORD)
         password_repeat_field.clear()
 
-        password_field.send_keys(password)
+        if password_repeated:
+            password_field.send_keys(password_repeated)
+        else:
+            password_field.send_keys(password)
         user_field.send_keys(user)
         email_field.send_keys(email)
         password_repeat_field.send_keys(password)
-        time.sleep(3)
+        time.sleep(1)
 
         self.find(self.locators.CHECK_BOX).click()
-        time.sleep(3)
+        time.sleep(1)
 
         self.find(self.locators.REGISTER_BUTTON).click()

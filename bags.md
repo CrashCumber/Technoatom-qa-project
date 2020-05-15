@@ -10,3 +10,14 @@
 
 8. все данные невалидные можно впихнкть через api( нулевой пароль, некорректная длина рользователя, майл)
 9. invaliid data logout
+10. test_create_account 210 ответ
+11 210 сущнотсь создана
+
+12. test_block_while_active block user active -1
+13. test_block_nonexistent_user разносить ли?
+14. test_unblock_user  разносить ли
+[6,16]
+15. тупая авторизация при длинном имени( его и не долхно быть)
+1) UI 4 бага- сcentos not fedora
+registation, size of window
+2)

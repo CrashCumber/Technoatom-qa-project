@@ -4,12 +4,13 @@ from selenium.webdriver.common.by import By
 class BaseLocators:
     INPUT_NAME = (By.XPATH,  '//input[@name="username"]')
     INPUT_PASSWORD = (By.XPATH, '//input[@name="password"]')
-    AUTHORIZATION_BUTTON = (By.XPATH, '//input[@type="submit" and @value="Login"]')
-    CREATE_ACCOUNT_BUTTON = (By.PARTIAL_LINK_TEXT, 'Create an account')
-    INVALID_DIV = (By.XPATH, '//div[contains(text(),"Invalid username or password")]')
-    INVALID_LENGTH_DIV = (By.XPATH, '//div[contains(text(),"Invalid username or password")]')
-    LOGIN_CONTROL_DIV = (By.ID, 'login-controls')
 
+    AUTHORIZATION_BUTTON = (By.XPATH, '//input[@type="submit" and @value="Login"]')
+
+    CREATE_ACCOUNT_BUTTON = (By.PARTIAL_LINK_TEXT, 'Create an account')
+
+    INVALID_DATA_DIV = (By.XPATH, '//div[text()="Invalid username or password"]')
+    INVALID_USERNAME_LENGTH_DIV = (By.XPATH, '//div[text()="Incorrect username length"]')
 
 
 class RegPageLocators(BaseLocators):
@@ -17,10 +18,15 @@ class RegPageLocators(BaseLocators):
     INPUT_NEW_PASSWORD = (By.XPATH, '//input[@name="password"]')
     INPUT_EMAIL = (By.XPATH, '//input[@name="email"]')
     INPUT_REPEAT_PASSWORD = (By.XPATH, '//input[@name="confirm"]')
+
     CHECK_BOX = (By.XPATH, '//input[@name="term"]')
     REGISTER_BUTTON = (By.XPATH, '//input[@type="submit" and @value="Register"]')
-    INVALID_EMAIL_DIV = (By.XPATH, '//div[contains(text(),"Invalid email address')
-    INVALID_NAME_DIV = (By.XPATH, '//div[contains(text(),"Incorrect username length")]')
+
+    INVALID_EMAIL_DIV = (By.XPATH, '//div[text()="Invalid email address"]')
+    INVALID_NAME_DIV = (By.XPATH, '//div[text()="Incorrect username length"]')
+    INVALID_EXIST_EMAIL_SERVER_ERROR_DIV = (By.XPATH, '//div[text()="Internal Server Error"]')
+    INVALID_PASSWORD_MATCH = (By.XPATH, '//div[text()="Passwords must match"]')
+    INVALID_EXIST_USER_DIV = (By.XPATH, '//div[text()="User already exist"]')
 
 
 class MainPageLocators(BaseLocators):
@@ -28,7 +34,6 @@ class MainPageLocators(BaseLocators):
     LOG_INFO_DIV = (By.ID, 'login-controls')
     LOG_VK_ID = (By.XPATH,  '//li[contains(text(),"VK ID:")]')
     LOG_USERNAME = (By.XPATH,  '//li[contains(text(),"Logged as")]')
-
 
     API_BUTTON = (By.XPATH, '//a[@href="https://en.wikipedia.org/wiki/Application_programming_interface"]')
     FUT_INTERNET_BUTTON = (By.XPATH, '//a[@href="https://www.popularmechanics.com/technology/infrastructure/a29666802/future-of-the-internet/"]')

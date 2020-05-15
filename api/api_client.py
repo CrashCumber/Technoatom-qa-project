@@ -25,7 +25,7 @@ class ApiClient:
         self.password = password
         self.email = email
         self.session = requests.Session()
-        # self.authorization(self.user, self.password)
+        self.authorization(self.user, self.password)
 
     def _request(self, method, location, headers=None, data=None, redirect=False, json_=False):
         if json_:
@@ -72,6 +72,26 @@ class ApiClient:
         location = URLS.ADD_USER
         headers = {'Content-Type': 'application/json'}
         response = self._request('POST', location, headers=headers, data=data)
+        return response
+
+    def registration(self, username, password, email):
+        data = {
+            "username": username,
+            "email": email,
+            "password": password,
+            "confirm": password,
+            "term": "y",
+            "submit": "Register"
+        }
+        data = json.dumps(data)
+        location = URLS.REG
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        response = self._request('POST', location, headers=headers, data=data)
+
+        while response.status_code == 302:
+            location = response.headers['Location']
+            response = self._request('GET', location)
+
         return response
 
     def delete(self, user):

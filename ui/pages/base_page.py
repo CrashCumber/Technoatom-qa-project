@@ -3,7 +3,8 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from ui.locators.locators import BaseLocators
-
+from faker import Faker
+fake = Faker()
 RETRY_COUNT = 3
 
 
@@ -52,3 +53,13 @@ class BasePage:
         password_field.send_keys(password)
         user_field.send_keys(user)
         self.find(self.locators.AUTHORIZATION_BUTTON).click()
+
+    def form_valid_user_data(self):
+        username = fake.last_name()
+        while len(username) not in range(7, 16):
+            username = fake.last_name()
+
+        password = fake.password()
+        email = fake.email()
+
+        return {"username": username, "password": password, "email": email}

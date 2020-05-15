@@ -35,7 +35,7 @@ def driver(config_ui):
     browser = config_ui['browser']
     version = config_ui['version']
     url = config_ui['url']
-    selenoid = False
+    selenoid = config_ui['selenoid']
     if not selenoid:
         manager = ChromeDriverManager(version=version)
         driver = webdriver.Chrome(executable_path=manager.install())
@@ -51,3 +51,5 @@ def driver(config_ui):
     driver.maximize_window()
     yield driver
     driver.close()
+
+

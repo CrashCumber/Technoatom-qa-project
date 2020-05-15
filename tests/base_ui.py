@@ -11,7 +11,7 @@ class BaseCase:
     @pytest.fixture(scope='function', autouse=True)
     def setup(self, driver, config_ui, request):
         self.driver = driver
-        self.config = config_ui
+        self.config_ui = config_ui
         self.base_page: BasePage = request.getfixturevalue('base_page')
         self.reg_page: RegPage = request.getfixturevalue('reg_page')
         self.main_page: MainPage = request.getfixturevalue('main_page')
