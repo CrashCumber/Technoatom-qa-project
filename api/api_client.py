@@ -6,7 +6,6 @@ fake = Faker()
 
 class URLS:
     ADD_USER = 'http://0.0.0.0:8080/api/add_user'
-
     DELETE_USER = 'http://0.0.0.0:8080/api/del_user/'
     BLOCK_USER = 'http://0.0.0.0:8080/api/block_user/'
     UNBLOCK_USER = 'http://0.0.0.0:8080/api/accept_user/'
@@ -15,6 +14,7 @@ class URLS:
     AUTORIZATION = 'http://0.0.0.0:8080/login'
     USER_PAGE = 'http://0.0.0.0:8080/welcome/'
     LOGOUT = 'http://0.0.0.0:8080/logout'
+    REG = 'http://0.0.0.0:8080/reg'
 
 
 class ApiClient:
@@ -27,13 +27,17 @@ class ApiClient:
         self.session = requests.Session()
         # self.authorization(self.user, self.password)
 
-    def _request(self, method, location, headers=None, data=None, redirect=False):
-        response = self.session.request(method, location, headers=headers, data=data, allow_redirects=redirect)
+    def _request(self, method, location, headers=None, data=None, redirect=False, json_=False):
+        if json_:
+            data = json.dumps(data)
+            response = self.session.request(method, location, headers=headers,  allow_redirects=redirect, json=data)
+        else:
+            response = self.session.request(method, location, headers=headers, data=data, allow_redirects=redirect)
         return response
 
     def form_valid_user_data(self, have_access=False, access_value=1):
         username = fake.last_name()
-        while len(username) in range(10, 15):
+        while len(username) not in range(7, 17):
             username = fake.last_name()
 
         password = fake.password()
@@ -97,7 +101,7 @@ class ApiClient:
 
     def insert_user_in_db(self, data):
         location = f'http://0.0.0.0:5000/insert_user/'
-        self._request('POST', location, data=data)
+        self._request('POST', location, data=data, json_=True)
 
     def delete_user_from_db(self, username):
         location = f'http://0.0.0.0:5000/delete_user/{username}'
@@ -110,4 +114,9 @@ class ApiClient:
         while response.status_code == 302:
             location = response.headers['Location']
             response = self._request('GET', location)
+        return response
+
+    def active_user(self, username):
+        location = f'http://0.0.0.0:5000/make_user_active/{username}'
+        response = self._request('GET', location)
         return response

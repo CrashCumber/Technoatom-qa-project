@@ -12,11 +12,10 @@ class TestAPIBlockage(BaseCase):
     @pytest.mark.API
     def test_block_user(self, api_client):
         data = api_client.form_valid_user_data(have_access=True)
-
-        api_client.insert_usr_in_db(data)
+        api_client.insert_user_in_db(data)
 
         response = api_client.block(data["username"])
-        assert response.status_code == 200, "Response status code isn't 200"
+        assert response.status_code == 200 #, "Response status code isn't 200"
 
         response_db = api_client.get_user_from_db(data["username"])
         response_data = json.loads(response_db.text)
@@ -27,16 +26,16 @@ class TestAPIBlockage(BaseCase):
     @pytest.mark.skip(reason='TEMP')
     @pytest.mark.API
     def test_unblock_user(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True, access_value=0)
-
+        data = api_client.form_valid_user_data(have_access=True)#, access_value=0)
         api_client.insert_user_in_db(data)
+        response = api_client.block(data["username"])
 
         response = api_client.unblock(data["username"])
         assert response.status_code == 200, "Response status code isn't 200"
 
         response_db = api_client.get_user_from_db(data["username"])
         response_data = json.loads(response_db.text)
-        assert response_data["access"] == 1
+        assert response_data["access"] == 1, response_data
 
         api_client.delete_user_from_db(data["username"])
 
@@ -49,13 +48,12 @@ class TestAPIBlockage(BaseCase):
         assert response.status_code == 404
 
         response = api_client.unblock(username)
-        assert response.status_code == 404
+        assert response.request.status_code == 404
 
     @pytest.mark.skip(reason='TEMP')
     @pytest.mark.API
     def test_auto_block_user(self, api_client):
         data = api_client.form_valid_user_data(have_access=True, access_value=0)
-
         api_client.insert_user_in_db(data)
 
         response = api_client.authorization(data["username"], data["password"])
@@ -63,23 +61,21 @@ class TestAPIBlockage(BaseCase):
 
         api_client.delete_user_from_db(data["username"])
 
+    @pytest.mark.skip(reason='TEMP')
     @pytest.mark.API
     def test_block_while_active(self, api_client):
         data = api_client.form_valid_user_data(have_access=True)
+        api_client.insert_user_in_db(data)
 
-        api_client.insert_usr_in_db(data)
-
-        api_client.authorization(data["username"], data["password"])
+        api_client.authorization(data["username"], data["password"]) #change to active user def
 
         response = api_client.block(data["username"])
         assert response.status_code == 200, "Response status code isn't 200"
-        assert response.url == URLS.AUTORIZATION, f'{response.url}'
-        assert response.url != URLS.USER_PAGE
 
         response_db = api_client.get_user_from_db(data["username"])
         response_data = json.loads(response_db.text)
-        assert response_data["access"] == 0
-        assert response_data["active"] == 0
+        assert response_data["access"] == 0, response_data
+        assert response_data["active"] == 0, response_data
 
         api_client.delete_user_from_db(data["username"])
 

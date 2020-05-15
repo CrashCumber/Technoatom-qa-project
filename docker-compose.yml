@@ -19,7 +19,6 @@ services:
 
     vk_api_mock:
         build: .
-        image: project_qa_vk_api_mock:main
         ports:
             - "5000:5000"
         depends_on:

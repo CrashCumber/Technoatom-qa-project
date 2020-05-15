@@ -62,7 +62,7 @@ def get_user(username: str):
     connection.close()
     time = user[6]
     if time:
-        time = user[6].strftime('%d-%m-%Y %H:%M:%S')
+        time = user[6].strftime('%Y-%d-%m %H:%M:%S')
     data = {
             "id": user[0],
             "username": user[1],
@@ -77,9 +77,10 @@ def get_user(username: str):
     return res
 
 
-@app.route('/insert_user', methods=['POST', 'GET'])
+@app.route('/insert_user/', methods=['POST', 'GET'])
 def insert_user():
     data = request.get_json()
+    data = json.loads(data)
     connection = mysql.connector.connect(**CONFIG)
     cursor = connection.cursor()
     insert = f"""
@@ -93,7 +94,7 @@ def insert_user():
                     '{data["username"]}',
                     '{data["password"]}',
                     '{data["email"]}',
-                    '{data["access"]}'
+                     {data["access"]}
                     );
                """
     cursor.execute(insert)
@@ -114,6 +115,17 @@ def delete_user(username: str):
     return 'Successful'
 
 
+@app.route('/make_user_active/<username>')
+def active_user(username: str):
+    connection = mysql.connector.connect(**CONFIG)
+    cursor = connection.cursor()
+    cursor.execute(f"UPDATE `test_users` SET active=1, start_active_time=CURRENT_TIMESTAMP WHERE username='{username}';")
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return 'Successful'
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
@@ -123,7 +135,13 @@ if __name__ == '__main__':
 
 
 
-
+#
+#
+#
+# @app.route('/uns')
+# def u_user():
+#     _request()
+#     return 'Successful'
 
 
 
