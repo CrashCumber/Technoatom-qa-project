@@ -31,11 +31,11 @@ def auto(driver):
 
 
 @pytest.fixture(scope='function')
-def driver(config_ui):
-    browser = config_ui['browser']
-    version = config_ui['version']
-    url = config_ui['url']
-    selenoid = config_ui['selenoid']
+def driver(config):
+    browser = config['browser']
+    version = config['version']
+    url = config['url']
+    selenoid = config['selenoid']
     if not selenoid:
         manager = ChromeDriverManager(version=version)
         driver = webdriver.Chrome(executable_path=manager.install())
@@ -44,7 +44,7 @@ def driver(config_ui):
         capabilities = {'acceptInsecureCerts': True,
                         'browserName': 'chrome',
                         'version': '80.0'}
-        driver = webdriver.Remote(command_executor=selenoid,
+        driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
                                   options=options,
                                   desired_capabilities=capabilities)
     driver.get(url)

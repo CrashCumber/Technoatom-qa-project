@@ -15,7 +15,7 @@ class TestUIBasePage(BaseCase):
         user = 'valentina'
         password = 'valentina'
         self.base_page.authorization(user, password)
-        assert 'http://0.0.0.0:8080/welcome/' == self.driver.current_url
+        assert f'{self.url}/welcome/' == self.driver.current_url
 
     @pytest.mark.UI
     def test_invalid_length_username_authorization(self):
@@ -24,7 +24,7 @@ class TestUIBasePage(BaseCase):
         self.base_page.authorization(user, password)
 
         assert self.base_page.find(self.base_page.locators.INVALID_USERNAME_LENGTH_DIV).is_displayed()
-        assert 'http://0.0.0.0:8080/login' == self.driver.current_url
+        assert f'{self.url}/login' == self.driver.current_url
 
     @pytest.mark.UI
     def test_nonexistent_user_authorization(self):
@@ -33,4 +33,4 @@ class TestUIBasePage(BaseCase):
         self.base_page.authorization(user, password)
 
         assert self.base_page.find(self.base_page.locators.INVALID_DATA_DIV).is_displayed()
-        assert 'http://0.0.0.0:8080/login' == self.driver.current_url
+        assert f'{self.url}/login' == self.driver.current_url

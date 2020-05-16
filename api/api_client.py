@@ -5,16 +5,16 @@ fake = Faker()
 
 
 class URLS:
-    ADD_USER = 'http://0.0.0.0:8080/api/add_user'
-    DELETE_USER = 'http://0.0.0.0:8080/api/del_user/'
-    BLOCK_USER = 'http://0.0.0.0:8080/api/block_user/'
-    UNBLOCK_USER = 'http://0.0.0.0:8080/api/accept_user/'
+    ADD_USER = 'http://0.0.0.0:8082/api/add_user'
+    DELETE_USER = 'http://0.0.0.0:8082/api/del_user/'
+    BLOCK_USER = 'http://0.0.0.0:8082/api/block_user/'
+    UNBLOCK_USER = 'http://0.0.0.0:8082/api/accept_user/'
 
-    STATUS_APP = 'http://0.0.0.0:8080/status'
-    AUTORIZATION = 'http://0.0.0.0:8080/login'
-    USER_PAGE = 'http://0.0.0.0:8080/welcome/'
-    LOGOUT = 'http://0.0.0.0:8080/logout'
-    REG = 'http://0.0.0.0:8080/reg'
+    STATUS_APP = 'http://0.0.0.0:8082/status'
+    AUTORIZATION = 'http://0.0.0.0:8082/login'
+    USER_PAGE = 'http://0.0.0.0:8082/welcome/'
+    LOGOUT = 'http://0.0.0.0:8082/logout'
+    REG = 'http://0.0.0.0:8082/reg'
 
 
 class ApiClient:
@@ -47,7 +47,7 @@ class ApiClient:
         return {"username": username, "password": password, "email": email}
 
     def authorization(self, user, password):
-        location = 'http://0.0.0.0:8080/login'
+        location = URLS.AUTORIZATION
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         data = {
             'username': user,

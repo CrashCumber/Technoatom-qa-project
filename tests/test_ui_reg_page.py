@@ -17,7 +17,7 @@ class TestUIRegPage(BaseCase):
 
         self.reg_page.create_account(date["username"], date["password"], date["email"])
         time.sleep(3)
-        assert 'http://0.0.0.0:8080/welcome/' == self.driver.current_url
+        assert f'{self.url}/welcome/' == self.driver.current_url
 
     @pytest.mark.UI
     def test_invalid_name_creation(self):
