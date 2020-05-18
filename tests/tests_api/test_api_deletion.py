@@ -1,10 +1,7 @@
 import json
 from faker import Faker
-from base_api import BaseCase
+from tests.base_api import BaseCase
 import pytest
-from api.api_client import URLS
-
-fake = Faker()
 
 
 class TestAPIDeletion(BaseCase):
@@ -26,8 +23,8 @@ class TestAPIDeletion(BaseCase):
         api_client.delete(data["username"])
 
         response_db = api_client.get_user_from_db(data["username"])
-        response_data = int(json.loads(response_db.text))
-        assert response_data == 0
+        response_data = json.loads(response_db.text)
+        assert response_data == "0"
 
     @pytest.mark.API #+++
     def test_delete_nonexistent_user_status_code(self, api_client):

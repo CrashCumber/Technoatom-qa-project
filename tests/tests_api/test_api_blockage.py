@@ -1,6 +1,6 @@
 import json
 from faker import Faker
-from base_api import BaseCase
+from tests.base_api import BaseCase
 import pytest
 from api.api_client import URLS
 fake = Faker()

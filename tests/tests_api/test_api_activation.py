@@ -1,10 +1,7 @@
 import datetime
 import json
-import time
-from faker import Faker
-from base_api import BaseCase
+from tests.base_api import BaseCase
 import pytest
-fake = Faker()
 
 
 class TestAPIActivation(BaseCase):

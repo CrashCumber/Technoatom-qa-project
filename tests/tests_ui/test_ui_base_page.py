@@ -4,7 +4,7 @@ import selenium
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from base_ui import BaseCase
+from tests.base_ui import BaseCase
 from ui.fixtures import *
 
 
@@ -12,8 +12,8 @@ class TestUIBasePage(BaseCase):
 
     @pytest.mark.UI
     def test_existent_user_authorization(self):
-        user = 'valentina'
-        password = 'valentina'
+        user = self.base_page.user
+        password = self.base_page.password
         self.base_page.authorization(user, password)
         assert f'{self.url}/welcome/' == self.driver.current_url
 

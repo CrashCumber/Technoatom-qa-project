@@ -20,10 +20,13 @@ class BasePage:
         self.find(self.locators.CREATE_ACCOUNT_BUTTON).click()
 
     def find(self, locator, timeout=None):
-        s = self.wait(timeout).until(EC.presence_of_all_elements_located(locator))
-        if len(s) == 1:
-            return self.wait(timeout).until(EC.presence_of_element_located(locator))
-        return self.wait(timeout).until(EC.presence_of_all_elements_located(locator))
+        try:
+            s = self.wait(timeout).until(EC.presence_of_all_elements_located(locator))
+            if len(s) == 1:
+                return self.wait(timeout).until(EC.presence_of_element_located(locator))
+            return self.wait(timeout).until(EC.presence_of_all_elements_located(locator))
+        except:
+            assert False, 'NO ELEMENT IN DOM'
 
     def click(self, locator, timeout=None):
         for i in range(RETRY_COUNT):

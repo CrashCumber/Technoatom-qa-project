@@ -1,4 +1,3 @@
-
 import json
 import mysql.connector
 from flask import Flask, request, make_response
@@ -115,6 +114,17 @@ def delete_user(username: str):
     return 'Successful'
 
 
+@app.route('/delete_users/')
+def delete_users():
+    connection = mysql.connector.connect(**CONFIG)
+    cursor = connection.cursor()
+    cursor.execute(" DELETE FROM `test_users` WHERE id>1;")
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return 'Successful'
+
+
 @app.route('/make_user_active/<username>')
 def active_user(username: str):
     connection = mysql.connector.connect(**CONFIG)
@@ -135,55 +145,10 @@ if __name__ == '__main__':
 
 
 
-#
-#
-#
-# @app.route('/uns')
-# def u_user():
-#     _request()
-#     return 'Successful'
 
 
 
 
 
-
-
-
-
-
-
-#
-# def run_mock():
-#     server = threading.Thread(target=app.run, kwargs={'host': host, 'port': port, 'debug': True})
-#     server.start()
-#     return server
-# @app.route('/post')
-# def post_user():
-#     try:
-#         data = {'v': 2}
-#         user_data.update(data)
-#     except :
-#         pass
-#     return json.dumps(user_data)
-
-# user_data = {'Ilya' :'1'}
-# @app.route('/vk_id/<username>')
-# def get_id(username: str):
-#     user_id = user_data.get(username, None)
-#     if user_id:
-#         print(user_id)
-#         return {'vk_id': user_id}
-#     else:
-#         abort(404)
-#         return {}
-#
-# def shutdown_mock():
-#     terminate_func = request.environ.get('werkzeug.server.shutdown')
-#     if terminate_func:
-#         terminate_func()
-# @app.route('/shutdown')
-# def shutdown():
-#     shutdown_mock()
 
 

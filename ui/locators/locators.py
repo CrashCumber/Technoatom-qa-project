@@ -41,7 +41,7 @@ class MainPageLocators(BaseLocators):
 
     FACT_PYTHON_DIV = (By.XPATH, '//div[contains(@class,"uk-text-large")]/p[2]')
 
-    HOME_BUTTON = (By.XPATH, '//a[contains(text(),"Home")]')
+    HOME_BUTTON = (By.XPATH, '//a[contains(text(),"HOME")]')
 
     PYTHON_BUTTON = (By.XPATH, '//a[text()="Python"]')
     PYTHON_HISTORY_BUTTON = (By.XPATH, '//a[text()="Python history"]')
