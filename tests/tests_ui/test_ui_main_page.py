@@ -117,8 +117,8 @@ class TestUIMaimPage(BaseCase):
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
 
-        assert 'Download' in self.driver.page_source
-        assert 'Wireshark' in self.driver.title
+        assert 'Download' in self.driver.title or 'download' in self.driver.current_url
+        assert 'Wireshark' in self.driver.title or 'wireshark' in self.driver.current_url
 
         self.driver.close()
         self.driver.switch_to.window(windows[0])
@@ -150,8 +150,8 @@ class TestUIMaimPage(BaseCase):
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
 
-        assert 'future' in self.driver.page_source
-        assert 'internet' in self.driver.page_source
+        assert 'future' in self.driver.current_url
+        assert 'internet' in self.driver.current_url
 
         self.driver.close()
         self.driver.switch_to.window(windows[0])
@@ -186,4 +186,10 @@ class TestUIMaimPage(BaseCase):
     def test_python_link(self, auto):
         self.base_page = auto
         self.base_page.find(self.main_page.locators.PYTHON_BUTTON, timeout=3).click()
-        assert 'https://www.python.org/' == self.driver.current_url
+        windows = self.driver.window_handles
+        self.driver.switch_to.window(windows[1])
+
+        assert 'python' in self.driver.title
+
+        self.driver.close()
+        self.driver.switch_to.window(windows[0])

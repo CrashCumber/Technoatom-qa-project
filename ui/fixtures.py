@@ -6,6 +6,10 @@ from ui.pages.base_page import BasePage
 from ui.pages.reg_page import RegPage
 from ui.pages.main_page import MainPage
 
+@pytest.fixture(scope='function')
+def new_window(driver):
+    yield
+
 
 @pytest.fixture(scope='function')
 def base_page(driver):

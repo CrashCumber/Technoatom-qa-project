@@ -26,8 +26,7 @@ class TestAPIBlockage(BaseCase):
         response = api_client.block(data["username"])
         assert response.status_code == 200  # , "Response status code isn't 200"
 
-        response_db = api_client.get_user_from_db(data["username"])
-        response_data = json.loads(response_db.text)
+        response_data = api_client.get_user_from_db(data["username"])
         assert response_data["access"] == 0
 
         api_client.delete_user_from_db(data["username"])
@@ -42,18 +41,18 @@ class TestAPIBlockage(BaseCase):
 
         api_client.delete_user_from_db(data["username"])
 
-    @pytest.mark.API  # +++
-    def test_unblock_user_data_in_db(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True, access_value=0)
-        api_client.insert_user_in_db(data)
+    @pytest.mark.NEED  # +++
+    def test_unblock_user_data_in_db(self, api_client, data_db):
+        # data = api_client.form_valid_user_data(have_access=True, access_value=0)
+        # api_client.insert_user_in_db(data)
+        data = data_db
 
         api_client.unblock(data["username"])
 
-        response_db = api_client.get_user_from_db(data["username"])
-        response_data = json.loads(response_db.text)
+        response_data = api_client.get_user_from_db(data["username"])
         assert response_data["access"] == 1, response_data
 
-        api_client.delete_user_from_db(data["username"])
+        # api_client.delete_user_from_db(data["username"])
 
     @pytest.mark.API #+++
     def test_block_nonexistent_user(self, api_client):
@@ -84,8 +83,7 @@ class TestAPIBlockage(BaseCase):
 
         api_client.block(data["username"])
 
-        response_db = api_client.get_user_from_db(data["username"])
-        response_data = json.loads(response_db.text)
+        response_data = api_client.get_user_from_db(data["username"])
         assert response_data["access"] == 0, response_data
         assert response_data["active"] == 0, response_data
 
