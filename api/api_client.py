@@ -132,26 +132,3 @@ class ApiClient(DBClient, threading.Thread):
             location = response.headers['Location']
             response = self._request('GET', location)
         return response
-
-
-
-
-
-
-    # def active_user(self, username):
-    #     location = f'http://0.0.0.0:5000/make_user_active/{username}'
-    #     response = self._request('GET', location)
-    #     return response
-    # def get_user_from_db(self, username):
-    #     location = f'http://0.0.0.0:5000/get_user/{username}'
-    #     response = self._request('GET', location)
-    #     return response
-    #
-    # def insert_user_in_db(self, data):
-    #     location = f'http://0.0.0.0:5000/insert_user/'
-    #     self._request('POST', location, data=data, json_=True)
-    #
-    # def delete_user_from_db(self, username):
-    #     location = f'http://0.0.0.0:5000/delete_user/{username}'
-    #     response = self._request('GET', location)
-    #     return response

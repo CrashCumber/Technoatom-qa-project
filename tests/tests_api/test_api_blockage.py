@@ -1,60 +1,39 @@
-import json
-from faker import Faker
 from tests.base_api import BaseCase
 import pytest
-from api.api_client import URLS
-fake = Faker()
 
 
 class TestAPIBlockage(BaseCase):
 
-    @pytest.mark.API #+++
-    def test_block_user_status_code(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True)
-        api_client.insert_user_in_db(data)
+    @pytest.mark.API_BLOCK #+++
+    def test_block_user_status_code(self, api_client, user_with_access):
+        data = user_with_access
+        response = api_client.block(data["username"])
+        assert response.status_code == 200
+
+    @pytest.mark.API_BLOCK # +++
+    def test_block_user_data_in_db(self, api_client, user_with_access):
+        data = user_with_access
 
         response = api_client.block(data["username"])
         assert response.status_code == 200
 
-        api_client.delete_user_from_db(data["username"])
-
-    @pytest.mark.API  # +++
-    def test_block_user_data_in_db(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True)
-        api_client.insert_user_in_db(data)
-
-        response = api_client.block(data["username"])
-        assert response.status_code == 200  # , "Response status code isn't 200"
-
         response_data = api_client.get_user_from_db(data["username"])
         assert response_data["access"] == 0
 
-        api_client.delete_user_from_db(data["username"])
-
-    @pytest.mark.API#+++
-    def test_unblock_user_status_code(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True, access_value=0)
-        api_client.insert_user_in_db(data)
-
+    @pytest.mark.API_BLOCK#+++
+    def test_unblock_user_status_code(self, api_client, user_with_zero_access):
+        data = user_with_zero_access
         response = api_client.unblock(data["username"])
         assert response.status_code == 200, "Response status code isn't 200"
 
-        api_client.delete_user_from_db(data["username"])
-
-    @pytest.mark.NEED  # +++
-    def test_unblock_user_data_in_db(self, api_client, data_db):
-        # data = api_client.form_valid_user_data(have_access=True, access_value=0)
-        # api_client.insert_user_in_db(data)
-        data = data_db
-
+    @pytest.mark.API_BLOCK # +++
+    def test_unblock_user_data_in_db(self, api_client, user_with_zero_access):
+        data = user_with_zero_access
         api_client.unblock(data["username"])
-
         response_data = api_client.get_user_from_db(data["username"])
         assert response_data["access"] == 1, response_data
 
-        # api_client.delete_user_from_db(data["username"])
-
-    @pytest.mark.API #+++
+    @pytest.mark.API_BLOCK #+++
     def test_block_nonexistent_user(self, api_client):
         username = "nonexistent"
 
@@ -64,22 +43,17 @@ class TestAPIBlockage(BaseCase):
         response = api_client.unblock(username)
         assert response.status_code == 404
 
-    @pytest.mark.API #+++
-    def test_auto_block_user(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True, access_value=0)
-        api_client.insert_user_in_db(data)
+    @pytest.mark.API_BLOCK #+++
+    def test_auto_block_user(self, api_client, user_with_zero_access):
+        data = user_with_zero_access
 
         response = api_client.authorization(data["username"], data["password"])
         assert response.status_code == 401
 
-        api_client.delete_user_from_db(data["username"])
-
-    @pytest.mark.API
-    def test_block_while_active(self, api_client):
-        data = api_client.form_valid_user_data(have_access=True)
-        api_client.insert_user_in_db(data)
-
-        api_client.authorization(data["username"], data["password"]) #change to active user def
+    @pytest.mark.API_BLOCK
+    def test_block_while_active(self, api_client, user_with_access):
+        data = user_with_access
+        api_client.active_user(data["username"])
 
         api_client.block(data["username"])
 
@@ -87,6 +61,5 @@ class TestAPIBlockage(BaseCase):
         assert response_data["access"] == 0, response_data
         assert response_data["active"] == 0, response_data
 
-        api_client.delete_user_from_db(data["username"])
 
 

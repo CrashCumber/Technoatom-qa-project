@@ -1,6 +1,4 @@
 import time
-import pytest
-import selenium
 from selenium.webdriver import ActionChains
 from tests.base_ui import BaseCase
 from ui.fixtures import *
@@ -8,7 +6,7 @@ from ui.fixtures import *
 
 class TestUIMaimPage(BaseCase):
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_window_size(self, auto):
         self.base_page = auto
 
@@ -18,7 +16,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.maximize_window()
 
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_log_info(self, auto):
         self.base_page = auto
         vk_id = self.base_page.find(self.main_page.locators.LOG_VK_ID, timeout=3).text
@@ -30,13 +28,13 @@ class TestUIMaimPage(BaseCase):
         name = name.split()[-1]
         assert name == self.base_page.user
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_python_fact(self, auto):
         self.base_page = auto
         fact = self.base_page.find(self.main_page.locators.FACT_PYTHON_DIV, timeout=3).text
         assert fact
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_python_history_link(self, auto):
         self.base_page = auto
         events = self.base_page.find(self.main_page.locators.PYTHON_BUTTON, timeout=3)
@@ -49,7 +47,7 @@ class TestUIMaimPage(BaseCase):
         assert 'History' in self.driver.title
         assert 'Python' in self.driver.title
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_flask_link(self, auto):
         self.base_page = auto
         events = self.base_page.find(self.main_page.locators.PYTHON_BUTTON, timeout=3)
@@ -67,7 +65,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_linux_centos_link(self, auto):
         self.base_page = auto
         events = self.base_page.find(self.main_page.locators.LINUX_BUTTON, timeout=3)
@@ -85,7 +83,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_wireshark_news_link(self, auto):
         self.base_page = auto
         events = self.base_page.find(self.main_page.locators.NETWORK_BUTTON, timeout=3)
@@ -104,7 +102,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_wireshark_download_link(self, auto):
         self.base_page = auto
         events = self.base_page.find(self.main_page.locators.NETWORK_BUTTON, timeout=3)
@@ -123,7 +121,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_tcp_example(self, auto):
         self.base_page = auto
         events = self.base_page.find(self.main_page.locators.NETWORK_BUTTON, timeout=3)
@@ -142,7 +140,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_future_link(self, auto):
         self.base_page = auto
         self.base_page.find(self.main_page.locators.FUT_INTERNET_BUTTON, timeout=3).click()
@@ -156,7 +154,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_api_link(self, auto):
         self.base_page = auto
         self.base_page.find(self.main_page.locators.API_BUTTON, timeout=3).click()
@@ -169,7 +167,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_smtp_link(self, auto):
         self.base_page = auto
         self.base_page.find(self.main_page.locators.SMTP_BUTTON, timeout=3).click()
@@ -182,7 +180,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.close()
         self.driver.switch_to.window(windows[0])
 
-    @pytest.mark.UI
+    @pytest.mark.UI_MAIN
     def test_python_link(self, auto):
         self.base_page = auto
         self.base_page.find(self.main_page.locators.PYTHON_BUTTON, timeout=3).click()
