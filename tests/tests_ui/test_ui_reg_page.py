@@ -65,7 +65,6 @@ class TestUIRegPage(BaseCase):
         data = {"username": "invalid_very_large_data", "password": "pass", "email": "invalid_email"}
         self.base_page.get_create_account_page()
         self.reg_page.create_account(**data)
-        time.sleep(3)
 
         assert (self.base_page.find(self.reg_page.locators.INVALID_NAME_DIV, timeout=3).is_displayed() or
                 self.base_page.find(self.reg_page.locators.INVALID_EMAIL_DIV, timeout=3).is_displayed())

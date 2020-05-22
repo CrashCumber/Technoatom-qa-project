@@ -4,6 +4,7 @@ from tests.base_ui import BaseCase
 from ui.fixtures import *
 
 
+
 class TestUIMaimPage(BaseCase):
 
     @pytest.mark.UI_MAIN
@@ -14,7 +15,6 @@ class TestUIMaimPage(BaseCase):
         time.sleep(4)
         assert self.base_page.find(self.main_page.locators.HOME_BUTTON).is_displayed()
         self.driver.maximize_window()
-
 
     @pytest.mark.UI_MAIN
     def test_log_info(self, auto):
@@ -44,8 +44,14 @@ class TestUIMaimPage(BaseCase):
 
         self.base_page.find(self.main_page.locators.PYTHON_HISTORY_BUTTON).click()
 
+        windows = self.driver.window_handles
+        self.driver.switch_to.window(windows[1])
+
         assert 'History' in self.driver.title
         assert 'Python' in self.driver.title
+
+        self.driver.close()
+        self.driver.switch_to.window(windows[0])
 
     @pytest.mark.UI_MAIN
     def test_flask_link(self, auto):
@@ -78,7 +84,7 @@ class TestUIMaimPage(BaseCase):
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
 
-        assert ('centos' in self.driver.page_source or 'Centos' in self.driver.page_source)
+        assert ('centos' in self.driver.title or 'Centos' in self.driver.title)
 
         self.driver.close()
         self.driver.switch_to.window(windows[0])
@@ -191,3 +197,31 @@ class TestUIMaimPage(BaseCase):
 
         self.driver.close()
         self.driver.switch_to.window(windows[0])
+
+
+
+
+
+
+
+
+
+
+#
+# class LinkDataWithActionChain:
+#
+#     python_history = ('PYTHON_BUTTON', 'PYTHON_HISTORY_BUTTON', ['python', 'history'])
+#     flask = ('PYTHON_BUTTON', 'FLASK_BUTTON', ['flask'])
+#
+#     linux_centos = ('LINUX_BUTTON', 'CENTOS_BUTTON', ['centos'])
+#
+#     wireshark_news = ('NETWORK_BUTTON', 'NEWS_BUTTON', ['wireshark', 'news'])
+#     wireshark_download = ('NETWORK_BUTTON', 'DOWNLOAD_BUTTON', ['wireshark', 'downloads'])
+#     tcp_example = ('NETWORK_BUTTON', 'TCPEXAMP_BUTTON', ['tcp'])
+#
+#
+# class LinkData:
+#     future = ('FUT_INTERNET_BUTTON', [])
+#     api = ('API_BUTTON', ['API'])
+#     smtp = ('SMTP_BUTTON', ['SMTP'])
+#     python = ('PYTHON_BUTTON', ['python'])
