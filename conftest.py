@@ -25,23 +25,13 @@ def docker_api():
 
     app = docker_client.containers.get('project_qa_myapp_1')
     app.start()
-    start = datetime.datetime.now()
-    time.sleep(3)
+    time.sleep(10)
 
-    yield docker_client
+    yield app
 
     app.stop()
     mock.stop()
     db.stop()
-    data = []
-    delta = (datetime.datetime.now() - start).seconds
-    start=start.hour-3
-    for i in app.logs(stream=True, since=start):
-        print(i, type(i))
-        # data.append(i.decode())
-    #
-    # DATA = json.dumps(data)
-    # allure.attach(name='logs', body=DATA, attachment_type=allure.attachment_type.JSON )
 
 
 def pytest_addoption(parser):
@@ -77,9 +67,7 @@ def config_api(docker_api) -> Settings:
 def api_client(config_api):
     user = 'valentina'
     password = 'valentina'
-    email = ''
-    client = ApiClient(config_api.URL, user, password, email)
-    # client.start()
+    client = ApiClient(config_api.URL, user, password)
     return client
 
 
@@ -88,18 +76,17 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
     if rep.when == 'call' and rep.failed:
-        mode = 'a' if os.path.exists('failures') else 'w'
         try:
-            with open('failures', mode) as f:
-                if 'driver' in item.fixturenames:
-                    web_driver = item.funcargs['driver']
-                else:
-                    print('Fail to take screen-shot')
-                    return
+            if 'driver' in item.fixturenames:
+                web_driver = item.funcargs['driver']
+            else:
+                return
+
             allure.attach(
                 web_driver.get_screenshot_as_png(),
                 name='screenshot',
                 attachment_type=allure.attachment_type.PNG
             )
         except Exception as e:
-            print('Fail to take screen-shot: {}'.format(e))
+            pass
+

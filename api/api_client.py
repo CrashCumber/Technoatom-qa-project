@@ -23,12 +23,11 @@ class URLS:
 
 class ApiClient(DBClient, threading.Thread):
 
-    def __init__(self, url, user, password, email):
+    def __init__(self, url, user, password):
         threading.Thread.__init__(self)
         self.base_url = url
         self.user = user
         self.password = password
-        self.email = email
         self.session = requests.Session()
         self.authorization(self.user, self.password)
         self.run()

@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from ui.locators.locators import BaseLocators
 from faker import Faker
 fake = Faker()
-RETRY_COUNT = 3
+RETRY_COUNT = 2
 
 
 class BasePage:
@@ -28,7 +28,7 @@ class BasePage:
         except:
             assert False, 'NO ELEMENT IN DOM'
 
-    def click(self, locator, timeout=None):
+    def click(self, locator, timeout=1):
         for i in range(RETRY_COUNT):
             try:
                 self.find(locator)
@@ -45,7 +45,7 @@ class BasePage:
 
     def wait(self, timeout=None):
         if timeout is None:
-            timeout = 5
+            timeout = 3
         return WebDriverWait(self.driver, timeout=timeout)
 
     def authorization(self, user, password):

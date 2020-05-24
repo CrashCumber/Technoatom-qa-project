@@ -1,3 +1,6 @@
+import json
+
+import allure
 import pytest
 from api.api_client import ApiClient
 
@@ -26,12 +29,9 @@ def user_without_access_field(api_client):
 
 
 @pytest.fixture(scope='function')
-def user_deletion(api_client):
-    yield
-    api_client.delete_user_from_db(data["username"])
-
-@pytest.fixture(scope='function')
 def user_data(api_client):
     data = api_client.form_valid_user_data(have_access=True)
     api_client.insert_user_in_db(data)
     return data
+
+
