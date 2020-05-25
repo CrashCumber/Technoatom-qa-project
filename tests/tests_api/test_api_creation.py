@@ -21,10 +21,11 @@ class DataExist:
     data4 = {"username": 'valentina', "password": "new_pas", "email": "new_mail@mail.ru"}
 
 
+@pytest.mark.API
 class TestAPICreation(BaseCase):
 
     @allure.title("Проверка кода ответа сервера при создании аккаунта")
-    @pytest.mark.API
+    @pytest.mark.API_CREATION
     def test_create_account_status_code(self, api_client, user_without_access_field):
         """Проверка кода ответа сервера при создании аккаунта.
         Запрос по урлу /api/add_user с валидными данными пользователя.
@@ -36,7 +37,7 @@ class TestAPICreation(BaseCase):
         assert response.status_code == 201, "Response status code isn't 201"
 
     @allure.title("Проверка сохраненных данных при создании аккаунта")
-    @pytest.mark.API
+    @pytest.mark.API_CREATION
     def test_create_account_save_in_db(self, api_client, user_without_access_field):
         """Проверка данных пользователя в базе данных при создании аккаунта.
         Запрос по урлу /api/add_user с валидными данными пользователя.
@@ -54,7 +55,7 @@ class TestAPICreation(BaseCase):
         assert response_data["access"] == 1
 
     @allure.title("Проверка кода ответа сервера при создании аккаунта с существующими именем пользователя")
-    @pytest.mark.API
+    @pytest.mark.API_CREATION
     @pytest.mark.parametrize("data", [DataExist.data1, DataExist.data2, DataExist.data3, DataExist.data4])
     def test_existent_user(self, api_client, data):
         """Проверка кода ответа сервера при создании аккаунта с существующими именем пользователя.
@@ -66,7 +67,7 @@ class TestAPICreation(BaseCase):
         assert response.status_code == 304
 
     @allure.title("Проверка кода ответа сервера при создании аккаунта с невалидными данными")
-    @pytest.mark.API
+    @pytest.mark.API_CREATION
     @pytest.mark.parametrize("data", [DataInvalid.data1, DataInvalid.data2, DataInvalid.data3, DataInvalid.data4, DataInvalid.data5, DataInvalid.data6, DataInvalid.data7])
     def test_invalid_data(self, api_client, data):
         """Проверка кода ответа сервера при создании аккаунта с невалидными данными.

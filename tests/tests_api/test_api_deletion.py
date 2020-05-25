@@ -3,6 +3,7 @@ from tests.base_api import BaseCase
 import pytest
 
 
+@pytest.mark.API
 class TestAPIDeletion(BaseCase):
 
     @allure.title("Проверка кода ответа при удалении пользователя")

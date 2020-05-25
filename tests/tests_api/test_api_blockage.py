@@ -4,6 +4,7 @@ from tests.base_api import BaseCase
 import pytest
 
 
+@pytest.mark.API
 class TestAPIBlockage(BaseCase):
 
     @allure.title("Проверка кода ответа при блокировке пользователя")

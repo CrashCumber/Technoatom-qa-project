@@ -2,10 +2,11 @@ from tests.base_ui import BaseCase
 from ui.fixtures import *
 
 
+@pytest.mark.UI
 class TestUIBasePage(BaseCase):
 
     @allure.title('Авторизация пользователя')
-    @pytest.mark.UI
+    @pytest.mark.UI_AUTO
     def test_existent_user_authorization(self):
         """ Авторизация валидного существующего пользователя.
         Ввод данных в поля авторизации.
@@ -18,7 +19,7 @@ class TestUIBasePage(BaseCase):
         assert f'{self.url}/welcome/' == self.driver.current_url
 
     @allure.title('Авторизация пользователя с невалидным именем')
-    @pytest.mark.UI
+    @pytest.mark.UI_AUTO
     def test_invalid_length_username_authorization(self):
         """ Авторизация невалидного существующего пользователя.
         Ввод данных в поля авторизации.
@@ -33,7 +34,7 @@ class TestUIBasePage(BaseCase):
         assert f'{self.url}/login' == self.driver.current_url
 
     @allure.title('Авторизация несуществующего пользователя')
-    @pytest.mark.UI
+    @pytest.mark.UI_AUTO
     def test_nonexistent_user_authorization(self):
         """ Авторизация несуществующего пользователя.
         Ввод данных в поля авторизации.

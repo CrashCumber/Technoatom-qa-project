@@ -6,6 +6,7 @@ from tests.base_api import BaseCase
 import pytest
 
 
+@pytest.mark.API
 class TestAPIActivation(BaseCase):
 
     @allure.title("Проверка статуса пользователя при авторизации")

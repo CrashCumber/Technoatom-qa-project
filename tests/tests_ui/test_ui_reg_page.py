@@ -3,6 +3,7 @@ from tests.base_ui import BaseCase
 from ui.fixtures import *
 
 
+@pytest.mark.UI
 class TestUIRegPage(BaseCase):
 
     @allure.title("Создание аккаунта")
