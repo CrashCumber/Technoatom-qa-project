@@ -33,6 +33,14 @@ def docker_api():
     mock.stop()
     db.stop()
 
+    data = []
+
+    for i in app.logs(stream=True, tail=10):
+        data.append(i.decode())
+
+    data = json.dumps(data)
+    allure.attach(name='logs of app', body=data, attachment_type=allure.attachment_type.JSON)
+
 
 def pytest_addoption(parser):
     parser.addoption('--url', default='http://0.0.0.0:8082')
@@ -77,10 +85,12 @@ def pytest_runtest_makereport(item, call):
     rep = outcome.get_result()
     if rep.when == 'call' and rep.failed:
         try:
+
             if 'driver' in item.fixturenames:
                 web_driver = item.funcargs['driver']
             else:
                 return
+
 
             allure.attach(
                 web_driver.get_screenshot_as_png(),
