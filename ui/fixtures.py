@@ -43,15 +43,14 @@ def driver(config):
         options = ChromeOptions()
         capabilities = {'acceptInsecureCerts': True,
                         'browserName': 'chrome',
-                        'version': '80.0'}
+                        'version': '83.0'}
         driver = webdriver.Remote(command_executor='http://127.0.0.1:4444/wd/hub',
                                   options=options,
                                   desired_capabilities=capabilities)
     driver.get(url)
     driver.maximize_window()
     yield driver
-    driver.close()
-
+    driver.quit()
 
 
 

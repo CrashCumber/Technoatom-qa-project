@@ -3,8 +3,8 @@
 myapp
 *__pycache__
 cm
-allure_report
 allure
-failure
+Pipfile
 plugs.py
-report
+app_logs.json
+db_logs.json

@@ -72,11 +72,11 @@ class TestUIMaimPage(BaseCase):
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
 
+        assert ('History' or 'history') in title, title
+        assert ('Python' or 'python') in title, title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'History' in title
-        assert 'Python' in title
 
     @allure.title("Корректность ссылки на страницу с информацией о flask")
     @pytest.mark.UI_MAIN
@@ -98,10 +98,10 @@ class TestUIMaimPage(BaseCase):
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
 
+        assert ('Flask' or 'flask') in title, title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'Flask' in title, title
 
 
     @allure.title("Корректность ссылки на страницу с информацией о centos")
@@ -123,11 +123,11 @@ class TestUIMaimPage(BaseCase):
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
+
+        assert ('centos' or 'Centos') in title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'centos' in title
-
 
     @allure.title("Корректность ссылки на страницу с новостями о wireshark")
     @pytest.mark.UI_MAIN
@@ -148,11 +148,12 @@ class TestUIMaimPage(BaseCase):
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
+
+        assert ('News' or 'news') in title, title
+        assert ('Wireshark' or 'wireshark') in title, title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'News' in title, title
-        assert 'Wireshark' in title, title
 
     @allure.title("Корректность ссылки на страницу с установщиком wireshark")
     @pytest.mark.UI_MAIN
@@ -172,14 +173,13 @@ class TestUIMaimPage(BaseCase):
 
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
-        title = self.driver.title
         url = self.driver.current_url
+
+        assert 'download' in url
+        assert 'wireshark' in url
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'Download' in title or 'download' in url, (url, title)
-        assert 'Wireshark' in title or 'wireshark' in url, (url, title)
-
 
     @allure.title("Корректность ссылки на страницу с примерами TCP")
     @pytest.mark.UI_MAIN
@@ -200,12 +200,12 @@ class TestUIMaimPage(BaseCase):
         windows = self.driver.window_handles
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
+
+        assert ('Tcpdump' or 'tcpdump') in title, title
+        assert ('Examples' or 'examples') in title, title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'Tcpdump' in title, title
-        assert 'Examples' in title, title
-
 
     @allure.title("Корректность ссылки на страницу с будущем интернета")
     @pytest.mark.UI_MAIN
@@ -222,11 +222,11 @@ class TestUIMaimPage(BaseCase):
         self.driver.switch_to.window(windows[1])
         url = self.driver.current_url
 
-        self.driver.close()
-        self.driver.switch_to.window(windows[0])
-
         assert 'future' in url, url
         assert 'internet' in url, url
+
+        self.driver.close()
+        self.driver.switch_to.window(windows[0])
 
     @allure.title("Корректность ссылки на страницу с API")
     @pytest.mark.UI_MAIN
@@ -243,10 +243,10 @@ class TestUIMaimPage(BaseCase):
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
 
+        assert ('Application programming interface' or 'API') in title, title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'Application programming interface' in title, title
 
     @allure.title("Корректность ссылки на страницу с SMTP")
     @pytest.mark.UI_MAIN
@@ -263,10 +263,10 @@ class TestUIMaimPage(BaseCase):
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
 
+        assert 'SMTP' in title
+
         self.driver.close()
         self.driver.switch_to.window(windows[0])
-
-        assert 'SMTP' in title
 
     @allure.title("Корректность ссылки на страницу питона")
     @pytest.mark.UI_MAIN
@@ -282,36 +282,7 @@ class TestUIMaimPage(BaseCase):
         self.driver.switch_to.window(windows[1])
         title = self.driver.title
 
-        self.driver.close()
-        self.driver.switch_to.window(windows[0])
-
         assert 'python' in title, title
 
-
-
-
-
-
-
-
-
-
-
-#
-# class LinkDataWithActionChain:
-#
-#     python_history = ('PYTHON_BUTTON', 'PYTHON_HISTORY_BUTTON', ['python', 'history'])
-#     flask = ('PYTHON_BUTTON', 'FLASK_BUTTON', ['flask'])
-#
-#     linux_centos = ('LINUX_BUTTON', 'CENTOS_BUTTON', ['centos'])
-#
-#     wireshark_news = ('NETWORK_BUTTON', 'NEWS_BUTTON', ['wireshark', 'news'])
-#     wireshark_download = ('NETWORK_BUTTON', 'DOWNLOAD_BUTTON', ['wireshark', 'downloads'])
-#     tcp_example = ('NETWORK_BUTTON', 'TCPEXAMP_BUTTON', ['tcp'])
-#
-#
-# class LinkData:
-#     future = ('FUT_INTERNET_BUTTON', [])
-#     api = ('API_BUTTON', ['API'])
-#     smtp = ('SMTP_BUTTON', ['SMTP'])
-#     python = ('PYTHON_BUTTON', ['python'])
+        self.driver.close()
+        self.driver.switch_to.window(windows[0])

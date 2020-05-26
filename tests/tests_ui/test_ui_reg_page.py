@@ -97,10 +97,10 @@ class TestUIRegPage(BaseCase):
 
         assert self.base_page.find(self.reg_page.locators.INVALID_EXIST_USER_DIV, timeout=2).is_displayed()
 
-    @allure.title("Создание аккаунта с невалидным именем (большим)")
+    @allure.title("Создание аккаунта с невалидным несколькими данными")
     @pytest.mark.UI_REG
     def test_invalid_data_creation(self):
-        """Создание аккаунта с невалидным длинным именем.
+        """Создание аккаунта с невалидным длинным именем и невалидной почтой.
         Ввод данных в поля регистрации.
         Появление окна с описанием невалидности введенных данных.
         """

@@ -60,4 +60,4 @@ class TestAPIDeletion(BaseCase):
         api_client.delete(username)
 
         response_data = api_client.get_user_from_db(username)
-        assert response_data is None, response_data
+        assert response_data == None, response_data

@@ -19,27 +19,24 @@ def docker_api():
 
     db = docker_client.containers.get('project_qa_db_1')
     db.start()
+    time.sleep(3)
 
     mock = docker_client.containers.get('project_qa_vk_api_mock_1')
     mock.start()
+    time.sleep(2)
 
     app = docker_client.containers.get('project_qa_myapp_1')
     app.start()
-    time.sleep(10)
 
-    yield app
+    time.sleep(3)
+
+    yield
 
     app.stop()
     mock.stop()
     db.stop()
 
-    data = []
-
-    for i in app.logs(stream=True, tail=10):
-        data.append(i.decode())
-
-    data = json.dumps(data)
-    allure.attach(name='logs of app', body=data, attachment_type=allure.attachment_type.JSON)
+    logs_record(app, db)
 
 
 def pytest_addoption(parser):
@@ -85,12 +82,10 @@ def pytest_runtest_makereport(item, call):
     rep = outcome.get_result()
     if rep.when == 'call' and rep.failed:
         try:
-
             if 'driver' in item.fixturenames:
                 web_driver = item.funcargs['driver']
             else:
                 return
-
 
             allure.attach(
                 web_driver.get_screenshot_as_png(),
@@ -100,3 +95,19 @@ def pytest_runtest_makereport(item, call):
         except Exception as e:
             pass
 
+def logs_record(app, db):
+
+    app_data = []
+    db_data = []
+
+    for i in app.logs(stream=True):
+        app_data.append(i.decode())
+
+    for i in db.logs(stream=True):
+        db_data.append(i.decode())
+
+    with open("app_logs.json", "w") as file:
+        json.dump(app_data, file, indent=3)
+
+    with open("db_logs.json", "w") as file:
+        json.dump(db_data, file, indent=3)

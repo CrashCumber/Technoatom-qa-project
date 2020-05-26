@@ -47,4 +47,6 @@
 4. `allure serve /tmp/my_allure_results`
 Данные записываются в директорию /tmp/my_allure_results (если ее нет, то директория создается)
 
+Логи приложения записыватся в файл app\_logs.json
+
 
