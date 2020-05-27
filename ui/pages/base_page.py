@@ -26,7 +26,7 @@ class BasePage:
                 return self.wait(timeout).until(EC.presence_of_element_located(locator))
             return self.wait(timeout).until(EC.presence_of_all_elements_located(locator))
         except:
-            assert False, 'NO ELEMENT IN DOM'
+            assert False, f'Элемента {locator} на странице не обнаружено '
 
     def click(self, locator, timeout=1):
         for i in range(RETRY_COUNT):
