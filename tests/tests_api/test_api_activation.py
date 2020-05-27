@@ -40,7 +40,7 @@ class TestAPIActivation(BaseCase):
         assert response.status_code == 200, response.status_code
 
     @allure.title("Проверка данных пользователя после деавторизации")
-    @pytest.mark.API_ACTION #-----!
+    @pytest.mark.API_ACTION
     def test_logout_data_in_db(self, api_client, user_with_access):
         """Проверка данных пользователя после деавторизации.
         Деавторизация пользователя.
@@ -54,9 +54,7 @@ class TestAPIActivation(BaseCase):
 
         response_data = api_client.get_user_from_db(data["username"])
 
-        assert response_data["active"] == 0, response_data
-        assert response_data["access"] == 1, response_data
-        assert response_data["password"] == data["password"], response_data
+        assert response_data["active"] == 0, "Поле active осталося 1"
 
     @allure.title("Проверка статуса приложения")
     @pytest.mark.API_ACTION
@@ -71,6 +69,19 @@ class TestAPIActivation(BaseCase):
 
         response = json.loads(response.text)
         assert "ok" in response["status"], response
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  # @pytest.mark.API

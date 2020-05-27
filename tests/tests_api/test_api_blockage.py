@@ -28,6 +28,7 @@ class TestAPIBlockage(BaseCase):
         """
 
         data = user_with_access
+        api_client.block(data["username"])
 
         response_data = api_client.get_user_from_db(data["username"])
         assert response_data["access"] == 0, response_data
@@ -83,10 +84,10 @@ class TestAPIBlockage(BaseCase):
         response = api_client.unblock(username)
         assert response.status_code == 404, response.status_code
 
-    @allure.title("Авторизация разлокирована пользователя")
+    @allure.title("Авторизация заблокированного пользователя")
     @pytest.mark.API_BLOCK
     def test_auto_block_user(self, api_client, user_with_zero_access):
-        """Проверка возможности авторизации разлокированого пользователя.
+        """Проверка возможности авторизации заблокированого пользователя.
         Запрос по урлу /login/ с валидными существующими данными пользователя.
         Код ответа должен быть 401(Пользователь не авторизован).
         """
@@ -101,7 +102,7 @@ class TestAPIBlockage(BaseCase):
     def test_block_while_active(self, api_client, user_with_access):
         """Блокировка пользователя во время пребывания на странице.
         Запрос по урлу /api/block_user/<username> с именем пользователя, у каоторого active = 1.
-        Пользователь блокируется и деавторизируется access = 1 active = 0.
+        Пользователь блокируется и деавторизируется access = 0 active = 0.
         """
 
         data = user_with_access
@@ -110,8 +111,8 @@ class TestAPIBlockage(BaseCase):
         api_client.block(data["username"])
 
         response_data = api_client.get_user_from_db(data["username"])
-        assert response_data["access"] == 0, response_data
-        assert response_data["active"] == 0, response_data
+        assert response_data["access"] == 0, 'Поле access осталося 1'
+        assert response_data["active"] == 0, 'Поле active осталося 1'
 
 
 

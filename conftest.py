@@ -95,6 +95,7 @@ def pytest_runtest_makereport(item, call):
         except Exception as e:
             pass
 
+
 def logs_record(app, db):
 
     app_data = []
